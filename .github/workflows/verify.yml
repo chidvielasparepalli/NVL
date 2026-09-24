@@ -4,18 +4,28 @@ on:
     branches: ["**"]
   pull_request:
 jobs:
-  verify:
+  frontend:
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: file:./prisma/ci.db
-      NEXTAUTH_URL: http://localhost:3000
-      NEXTAUTH_SECRET: ci-secret-not-for-production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: npm install
-      - run: npx prisma generate
       - run: npm run typecheck
       - run: npm run build
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - working-directory: backend
+        run: npm install
+      - working-directory: backend
+        run: npx prisma generate
+      - working-directory: backend
+        run: npm run typecheck
+      - working-directory: backend
+        run: npm run build
