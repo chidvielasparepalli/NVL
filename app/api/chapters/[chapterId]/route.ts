@@ -1,7 +1,0 @@
-import { NextResponse } from "next/server";
-import { z } from "zod";
-import { prisma } from "@/lib/prisma";
-import { requireChapterOwner } from "@/lib/api";
-const schema=z.object({title:z.string().trim().min(1).max(120).optional(),content:z.string().optional(),wordCount:z.number().int().min(0).max(1000000).optional()});
-export async function PATCH(request:Request,context:{params:Promise<{chapterId:string}>}){try{const {chapterId}=await context.params;await requireChapterOwner(chapterId);const data=schema.parse(await request.json());const chapter=await prisma.chapter.update({where:{id:chapterId},data});await prisma.novel.update({where:{id:chapter.novelId},data:{updatedAt:new Date()}});return NextResponse.json(chapter);}catch{return NextResponse.json({error:"Unable to save chapter"},{status:400});}}
-export async function DELETE(_request:Request,context:{params:Promise<{chapterId:string}>}){try{const {chapterId}=await context.params;const {chapter}=await requireChapterOwner(chapterId);await prisma.chapter.delete({where:{id:chapterId}});const remaining=await prisma.chapter.findMany({where:{novelId:chapter.novelId},orderBy:{order:"asc"}});await prisma.$transaction(remaining.map((item,index)=>prisma.chapter.update({where:{id:item.id},data:{order:index}})));return NextResponse.json({ok:true});}catch{return NextResponse.json({error:"Unable to delete chapter"},{status:400});}}
