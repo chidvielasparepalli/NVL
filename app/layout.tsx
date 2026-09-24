@@ -1,5 +1,1 @@
-import type { Metadata } from "next";
-import { AppSessionProvider } from "@/components/session-provider";
-import "./globals.css";
-export const metadata:Metadata={title:"Novel Writer",description:"A private gothic writing room."};
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body><AppSessionProvider><div className="app-shell">{children}</div></AppSessionProvider></body></html>;}
+import type {Metadata} from "next";import{AppSessionProvider}from "@/components/session-provider";import"./globals.css";export const metadata:Metadata={title:"NOVAL — Novel Writer",description:"A private gothic writing room."};export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body><AppSessionProvider><div className="app-shell">{children}</div></AppSessionProvider></body></html>;}

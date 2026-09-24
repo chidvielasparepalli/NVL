@@ -1,16 +1,3 @@
-import { notFound, redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { getCurrentUserId } from "@/lib/auth";
-import { EditorRoom } from "@/components/editor-room";
-
-export default async function EditorPage({params}:{params:Promise<{novelId:string;chapterId:string}>}){
-  const userId=await getCurrentUserId();if(!userId)redirect("/");
-  const {novelId,chapterId}=await params;
-  const novel=await prisma.novel.findFirst({where:{id:novelId,userId},include:{chapters:{orderBy:{order:"asc"},select:{id:true,title:true,order:true,wordCount:true}}}});
-  if(!novel)notFound();
-  const chapter=novel.chapters.find(item=>item.id===chapterId);if(!chapter)notFound();
-  const full=await prisma.chapter.findFirst({where:{id:chapterId,novelId}});
-  if(!full)notFound();
-  let initialContent:object={type:"doc",content:[{type:"paragraph"}]};try{initialContent=JSON.parse(full.content);}catch{}
-  return <EditorRoom novelId={novel.id} novelTitle={novel.title} chapterId={chapter.id} chapterTitle={chapter.title} initialContent={initialContent} chapters={novel.chapters}/>;
-}
+"use client";
+import{useEffect,useState}from"react";import{useParams,useRouter}from"next/navigation";import{EditorRoom}from"@/components/editor-room";import{api}from"@/lib/api-client";import{useAuth}from"@/components/session-provider";
+export default function EditorPage(){const params=useParams<{novelId:string;chapterId:string}>();const router=useRouter();const{user,loading}=useAuth();const[data,setData]=useState<any>(null);useEffect(()=>{if(!loading&&!user){router.replace("/");return;}if(user&&params.novelId&&params.chapterId)api("/novels/"+params.novelId+"/chapters/"+params.chapterId).then(setData).catch(()=>router.replace("/app"));},[loading,user,params.novelId,params.chapterId,router]);if(!data)return <main className="grid min-h-screen place-items-center text-xs uppercase tracking-[.3em] text-stone-600">Opening chapter…</main>;let content={type:"doc",content:[{type:"paragraph"}]};try{content=JSON.parse(data.chapter.content);}catch{}return <EditorRoom novelId={data.novel.id} novelTitle={data.novel.title} chapterId={data.chapter.id} chapterTitle={data.chapter.title} initialContent={content} chapters={data.chapters}/>;}
