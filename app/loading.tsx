@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="grid min-h-screen place-items-center"><div className="text-center"><div className="mx-auto h-10 w-10 animate-pulse rounded-full border border-red-300/30 bg-red-500/10"/><div className="mt-4 text-xs uppercase tracking-[.3em] text-stone-600">Opening NOVAL</div></div></main>}

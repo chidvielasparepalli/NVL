@@ -1,0 +1,5 @@
+import { NextResponse } from "next/server";
+export async function GET(request:Request){const {searchParams}=new URL(request.url);const word=(searchParams.get("word")??"").trim();const context=(searchParams.get("context")??"").trim();if(!word)return NextResponse.json({synonyms:[]});try{const urls=[
+  "https://api.datamuse.com/words?rel_syn="+encodeURIComponent(word)+"&max=18",
+  context?"https://api.datamuse.com/words?ml="+encodeURIComponent(context)+"&sp="+encodeURIComponent(word)+"*&max=12":""
+].filter(Boolean);const results=await Promise.all(urls.map((url)=>fetch(url,{next:{revalidate:3600}}).then((r)=>r.ok?r.json():[])));const map=new Map<string,number>();for(const list of results){for(const item of list as Array<{word:string,score?:number}>){const candidate=String(item.word??"").trim();if(!candidate||candidate.toLowerCase()===word.toLowerCase()||candidate.includes(" "))continue;map.set(candidate,Math.max(map.get(candidate)??0,(item.score??0)));}}const synonyms=[...map.entries()].sort((a,b)=>b[1]-a[1]).slice(0,12).map(([value])=>value);return NextResponse.json({synonyms});}catch{return NextResponse.json({synonyms:[]});}}

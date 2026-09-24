@@ -1,0 +1,4 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+const schema=z.object({text:z.string().min(1).max(5000),source:z.string().min(2).max(20)});
+export async function POST(request:Request){try{const {text,source}=schema.parse(await request.json());const language=source.split("-")[0];if(language==="en")return NextResponse.json({translation:text});const url="https://api.mymemory.translated.net/get?q="+encodeURIComponent(text)+"&langpair="+encodeURIComponent(language+"|en");const response=await fetch(url);if(!response.ok)throw new Error("translation failed");const data=await response.json() as {responseData?:{translatedText?:string}};return NextResponse.json({translation:data.responseData?.translatedText??text});}catch{return NextResponse.json({error:"Translation unavailable"},{status:502});}}

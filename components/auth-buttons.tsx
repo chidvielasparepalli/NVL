@@ -1,0 +1,4 @@
+"use client";
+import { signIn, signOut } from "next-auth/react";
+export function SignInButton(){return <button onClick={()=>signIn("google",{callbackUrl:"/app"})} className="group inline-flex items-center gap-3 rounded-full border border-red-400/30 bg-red-600/90 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(220,38,38,.2)] transition hover:bg-red-500"><span className="grid h-7 w-7 place-items-center rounded-full bg-white text-black text-xs font-bold">G</span>Continue with Google<span className="transition group-hover:translate-x-1">→</span></button>}
+export function SignOutButton(){return <button onClick={()=>signOut({callbackUrl:"/"})} className="rounded-full border border-white/10 px-4 py-2 text-xs text-stone-300 transition hover:border-white/20 hover:bg-white/5">Sign out</button>}

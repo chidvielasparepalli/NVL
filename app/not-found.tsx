@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound(){return <main className="grid min-h-screen place-items-center p-8"><div className="text-center"><div className="text-6xl">☠</div><h1 className="mt-5 font-display text-5xl text-stone-100">Chapter not found.</h1><p className="mt-3 text-stone-600">This page is missing or does not belong to your account.</p><Link href="/app" className="mt-6 inline-block rounded-full border border-white/10 px-5 py-3 text-sm text-stone-300">Back to library</Link></div></main>}

@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0}
+body{font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#090909;color:#f5f1e9;background-image:url("/gothic-pattern.svg");background-size:320px 320px}
+button,input,textarea{font:inherit}
+::selection{background:rgba(239,68,68,.28)}
+.app-shell{min-height:100vh;background:linear-gradient(180deg,rgba(7,7,8,.74),rgba(7,7,8,.92))}
+.glass{border:1px solid rgba(255,255,255,.08);background:rgba(16,16,17,.68);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.24)}
+.novel-input{outline:none;background:transparent}
+.editor-wrap .ProseMirror{min-height:62vh;outline:none;padding:2rem 0 12rem;font-family:Georgia,serif;font-size:1.2rem;line-height:1.95;color:#f1ece4}
+.editor-wrap .ProseMirror p{margin:.15em 0 1.1em}
+.editor-wrap .ProseMirror h1,.editor-wrap .ProseMirror h2,.editor-wrap .ProseMirror h3{font-family:Georgia,serif;color:#fff4e8}
+.editor-wrap .ProseMirror h1{font-size:2.6rem}
+.editor-wrap .ProseMirror h2{font-size:2rem}
+.editor-wrap .ProseMirror blockquote{border-left:2px solid rgba(239,68,68,.65);padding-left:1rem;color:#c9c1b6}
+.repeated-word{background:rgba(220,38,38,.16);box-shadow:inset 0 -2px 0 rgba(248,113,113,.65);cursor:pointer;border-radius:3px;padding:0 1px}
+.voice-active{box-shadow:0 0 0 1px rgba(248,113,113,.55),0 0 28px rgba(220,38,38,.18)}
+.scrollbar-thin::-webkit-scrollbar{width:7px;height:7px}.scrollbar-thin::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:999px}
+@media(max-width:640px){.editor-wrap .ProseMirror{font-size:1.05rem;line-height:1.8;padding-top:1.25rem}.editor-wrap .ProseMirror h1{font-size:2rem}.editor-wrap .ProseMirror h2{font-size:1.6rem}}
